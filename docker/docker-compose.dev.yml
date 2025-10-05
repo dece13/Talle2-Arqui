@@ -5,12 +5,12 @@ services:
     build:
       context: ../backed
       dockerfile: Dockerfile
-    container_name: agorasoft-backend
+    container_name: backTaller-backend
     environment:
       SPRING_PROFILES_ACTIVE: dev
-      SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5432/AgoraSoft
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: contrasena
+      SPRING_DATASOURCE_URL: jdbc:mysql://host.docker.internal:3306/proyectoastaller
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Nalita.48
       JPA_DDL_AUTO: update
       JPA_SHOW_SQL: "true"
 
