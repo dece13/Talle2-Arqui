@@ -1,7 +1,7 @@
-package com.grupoArq.Telas.controlador;
+package com.grupoArq.Telas.controladores;
 
 import com.grupoArq.Telas.entidades.Vestido;
-import com.grupoArq.Telas.repositorio.VestidoRepository;
+import com.grupoArq.Telas.repositorios.VestidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

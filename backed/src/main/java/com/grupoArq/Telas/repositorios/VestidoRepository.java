@@ -1,4 +1,4 @@
-package com.grupoArq.Telas.repositorio;
+package com.grupoArq.Telas.repositorios;
 
 import com.grupoArq.Telas.entidades.Vestido;
 import org.springframework.data.jpa.repository.JpaRepository;

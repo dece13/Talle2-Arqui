@@ -1,63 +1,85 @@
-<h2>Listado de Vestidos</h2>
-<table>
-  <thead>
-  <tr>
-    <th>Tipo</th>
-    <th>Cantidad</th>
-    <th>Colores</th>
-    <th>Tamaño</th>
-    <th>Acciones</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let vestido of vestidos">
-    <td>{{ vestido.tipo }}</td>
-    <td>{{ vestido.cantidad }}</td>
-    <td>{{ vestido.colores }}</td>
-    <td>{{ vestido.tamano }}</td>
-    <td>
-      <button (click)="seleccionarVestido(vestido)">Editar</button>
-      <button (click)="eliminarVestido(vestido.id!)">Eliminar</button>
-    </td>
-  </tr>
-  </tbody>
-</table>
+<div class="vestidos-container">
+  <h2 class="titulo">👗 Listado de Vestidos</h2>
 
-<hr />
+  <!-- Tabla de vestidos -->
+  <div class="tabla-wrapper">
+    <table class="tabla-vestidos">
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Cantidad</th>
+          <th>Colores</th>
+          <th>Tamaño</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let vestido of vestidos">
+          <td>{{ vestido.tipo }}</td>
+          <td>{{ vestido.cantidad }}</td>
+          <td>{{ vestido.colores }}</td>
+          <td>{{ vestido.tamano }}</td>
+          <td class="acciones">
+            <button class="btn-editar" (click)="seleccionarVestido(vestido)">✏️ Editar</button>
+            <button class="btn-eliminar" (click)="eliminarVestido(vestido.id!)">🗑️ Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-<!-- Formulario de edición -->
-<form *ngIf="modoEdicion && selectedVestido" (ngSubmit)="guardarVestido()">
-  <h3>Editar Vestido</h3>
-  <label>Tipo:
-    <input [(ngModel)]="selectedVestido.tipo" name="tipoEdit" required>
-  </label>
-  <label>Cantidad:
-    <input type="number" [(ngModel)]="selectedVestido.cantidad" name="cantidadEdit" required>
-  </label>
-  <label>Colores:
-    <input [(ngModel)]="selectedVestido.colores" name="coloresEdit" required>
-  </label>
-  <label>Tamaño:
-    <input [(ngModel)]="selectedVestido.tamano" name="tamanoEdit" required>
-  </label>
-  <button type="submit">Actualizar</button>
-  <button type="button" (click)="limpiarSeleccion()">Cancelar</button>
-</form>
+  <hr class="separador" />
 
-<!-- Formulario de creación -->
-<form *ngIf="!modoEdicion" (ngSubmit)="guardarVestido()">
-  <h3>Agregar Vestido</h3>
-  <label>Tipo:
-    <input [(ngModel)]="nuevoVestido.tipo" name="tipoNew" required>
-  </label>
-  <label>Cantidad:
-    <input type="number" [(ngModel)]="nuevoVestido.cantidad" name="cantidadNew" required>
-  </label>
-  <label>Colores:
-    <input [(ngModel)]="nuevoVestido.colores" name="coloresNew" required>
-  </label>
-  <label>Tamaño:
-    <input [(ngModel)]="nuevoVestido.tamano" name="tamanoNew" required>
-  </label>
-  <button type="submit">Crear</button>
-</form>
+  <!-- Formulario de edición -->
+  <form *ngIf="modoEdicion && selectedVestido" (ngSubmit)="guardarVestido()" class="formulario">
+    <h3 class="subtitulo">✏️ Editar Vestido</h3>
+    
+    <div class="campo">
+      <label>Tipo:</label>
+      <input [(ngModel)]="selectedVestido.tipo" name="tipoEdit" required>
+    </div>
+    <div class="campo">
+      <label>Cantidad:</label>
+      <input type="number" [(ngModel)]="selectedVestido.cantidad" name="cantidadEdit" required>
+    </div>
+    <div class="campo">
+      <label>Colores:</label>
+      <input [(ngModel)]="selectedVestido.colores" name="coloresEdit" required>
+    </div>
+    <div class="campo">
+      <label>Tamaño:</label>
+      <input [(ngModel)]="selectedVestido.tamano" name="tamanoEdit" required>
+    </div>
+
+    <div class="botones-form">
+      <button type="submit" class="btn-guardar">💾 Actualizar</button>
+      <button type="button" (click)="limpiarSeleccion()" class="btn-cancelar">❌ Cancelar</button>
+    </div>
+  </form>
+
+  <!-- Formulario de creación -->
+  <form *ngIf="!modoEdicion" (ngSubmit)="guardarVestido()" class="formulario">
+    <h3 class="subtitulo">➕ Agregar Vestido</h3>
+    
+    <div class="campo">
+      <label>Tipo:</label>
+      <input [(ngModel)]="nuevoVestido.tipo" name="tipoNew" required>
+    </div>
+    <div class="campo">
+      <label>Cantidad:</label>
+      <input type="number" [(ngModel)]="nuevoVestido.cantidad" name="cantidadNew" required>
+    </div>
+    <div class="campo">
+      <label>Colores:</label>
+      <input [(ngModel)]="nuevoVestido.colores" name="coloresNew" required>
+    </div>
+    <div class="campo">
+      <label>Tamaño:</label>
+      <input [(ngModel)]="nuevoVestido.tamano" name="tamanoNew" required>
+    </div>
+
+    <div class="botones-form">
+      <button type="submit" class="btn-guardar">✅ Crear</button>
+    </div>
+  </form>
+</div>

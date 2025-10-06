@@ -1,24 +1,26 @@
-<h2>Listado de Vestidos</h2>
-<table>
-  <thead>
-  <tr>
-    <th>Tipo</th>
-    <th>Cantidad</th>
-    <th>Colores</th>
-    <th>Tamaño</th>
-    <th>Acciones</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let vestido of vestidos">
-    <td>{{ vestido.tipo }}</td>
-    <td>{{ vestido.cantidad }}</td>
-    <td>{{ vestido.colores }}</td>
-    <td>{{ vestido.tamano }}</td>
+<div class="vestidos-container">
+  <h2 class="titulo">👗 Listado de Vestidos</h2>
 
-  </tr>
-  </tbody>
-</table>
+  <div class="tabla-wrapper">
+    <table class="tabla-vestidos">
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Cantidad</th>
+          <th>Colores</th>
+          <th>Tamaño</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let vestido of vestidos">
+          <td>{{ vestido.tipo }}</td>
+          <td>{{ vestido.cantidad }}</td>
+          <td>{{ vestido.colores }}</td>
+          <td>{{ vestido.tamano }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-<hr />
-
+  <hr class="separador" />
+</div>

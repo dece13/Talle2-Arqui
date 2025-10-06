@@ -112,9 +112,9 @@ export class SignUp {
 
         // ✅ Navegamos según el valor
         if (userFromBackend.esSuperusuario) {
-          this.router.navigate(['/admin/dashboard']);
+          this.router.navigate(['/vestido/crud']);
         } else {
-          this.router.navigate(['/cliente/dashboard']);
+          this.router.navigate(['/vestido/user']);
         }
       }
     }
