@@ -1,21 +1,6 @@
 version: "3.9"
 
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: mysql-taller
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: Nalita.48
-      MYSQL_DATABASE: proyectoastaller
-    ports:
-      - "3307:3306"
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pNalita.48"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-
   backend:
     build:
       context: ../backed
@@ -23,16 +8,16 @@ services:
     container_name: backTaller-backend
     environment:
       SPRING_PROFILES_ACTIVE: dev
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/proyectoastaller
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: Nalita.48
-      JPA_DDL_AUTO: update
-      JPA_SHOW_SQL: "true"
-    expose:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://aws-1-us-east-2.pooler.supabase.com:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres.kbzpuizmuxvyzdmuwnth
+      SPRING_DATASOURCE_PASSWORD: Taller.Arqui1234
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+    ports:
       - "8080:8080"
-    depends_on:
-      mysql:
-        condition: service_healthy
+    restart: always
 
   frontend:
     build:
@@ -41,6 +26,7 @@ services:
     container_name: agorasoft-frontend
     expose:
       - "80"
+    restart: always
 
   proxy:
     image: nginx:1.27-alpine
@@ -52,3 +38,4 @@ services:
       - "8085:80"
     volumes:
       - ./nginx/proxy.conf:/etc/nginx/conf.d/default.conf:ro
+    restart: always
