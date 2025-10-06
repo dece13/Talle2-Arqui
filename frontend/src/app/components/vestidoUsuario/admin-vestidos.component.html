@@ -15,49 +15,10 @@
     <td>{{ vestido.cantidad }}</td>
     <td>{{ vestido.colores }}</td>
     <td>{{ vestido.tamano }}</td>
-    <td>
-      <button (click)="seleccionarVestido(vestido)">Editar</button>
-      <button (click)="eliminarVestido(vestido.id!)">Eliminar</button>
-    </td>
+
   </tr>
   </tbody>
 </table>
 
 <hr />
 
-<!-- Formulario de edición -->
-<form *ngIf="modoEdicion && selectedVestido" (ngSubmit)="guardarVestido()">
-  <h3>Editar Vestido</h3>
-  <label>Tipo:
-    <input [(ngModel)]="selectedVestido.tipo" name="tipoEdit" required>
-  </label>
-  <label>Cantidad:
-    <input type="number" [(ngModel)]="selectedVestido.cantidad" name="cantidadEdit" required>
-  </label>
-  <label>Colores:
-    <input [(ngModel)]="selectedVestido.colores" name="coloresEdit" required>
-  </label>
-  <label>Tamaño:
-    <input [(ngModel)]="selectedVestido.tamano" name="tamanoEdit" required>
-  </label>
-  <button type="submit">Actualizar</button>
-  <button type="button" (click)="limpiarSeleccion()">Cancelar</button>
-</form>
-
-<!-- Formulario de creación -->
-<form *ngIf="!modoEdicion" (ngSubmit)="guardarVestido()">
-  <h3>Agregar Vestido</h3>
-  <label>Tipo:
-    <input [(ngModel)]="nuevoVestido.tipo" name="tipoNew" required>
-  </label>
-  <label>Cantidad:
-    <input type="number" [(ngModel)]="nuevoVestido.cantidad" name="cantidadNew" required>
-  </label>
-  <label>Colores:
-    <input [(ngModel)]="nuevoVestido.colores" name="coloresNew" required>
-  </label>
-  <label>Tamaño:
-    <input [(ngModel)]="nuevoVestido.tamano" name="tamanoNew" required>
-  </label>
-  <button type="submit">Crear</button>
-</form>

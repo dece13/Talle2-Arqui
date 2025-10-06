@@ -12,7 +12,7 @@ import {CommonModule} from '@angular/common';
   ],
   styleUrls: ['./admin-vestidos.component.css']
 })
-export class AdminVestidosComponent implements OnInit {
+export class UserVestidosComponent implements OnInit {
   vestidos: Vestido[] = [];
   selectedVestido: Vestido | null = null;
   nuevoVestido: Vestido = { tipo: '', cantidad: 0, colores: '', tamano: '' };
