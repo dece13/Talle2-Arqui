@@ -8,7 +8,7 @@ export class AuthService {
   private signedIn$ = new BehaviorSubject<boolean>(false);
 
   constructor() {
-    this.clerk = new Clerk('pk_test_YWNjZXB0ZWQtdGVybWl0ZS05MS5jbGVyay5hY2NvdW50cy5kZXYk');
+    this.clerk = new Clerk('pk_test_Z2xvd2luZy1qYXliaXJkLTQ5LmNsZXJrLmFjY291bnRzLmRldiQ');
 
     this.initializeClerk();
   }
@@ -34,15 +34,12 @@ export class AuthService {
     lastName: string,
     email: string,
     password: string,
-    role: string,
-    plaza: string
   ) {
     return this.clerk?.client?.signUp.create({
       firstName,
       lastName,
       emailAddress: email,
       password,
-      unsafeMetadata: { role, plaza }, // 👈 metadata personalizada
     });
   }
 
@@ -107,4 +104,27 @@ export class AuthService {
   getClerkInstance(): Clerk {
     return this.clerk;
   }
+
+  async getUser(): Promise<any> {
+    const token = await this.getToken();
+
+    const response = await fetch('http://localhost:8080/api/usuario', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Error al obtener el usuario');
+    }
+
+    return await response.json(); // Retorna el usuario con superusuario
+  }
+
+  async isSuperUser(): Promise<boolean> {
+    const user = await this.getUser();
+    return user.superusuario === true;
+  }
+
+
 }

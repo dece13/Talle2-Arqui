@@ -15,8 +15,8 @@ export const routes: Routes = [
   {
     path: 'comercial',
     component: ComercialLayout,
-    canActivate: [AuthGuard],
-    data: { role: 'comercial' },
+    //canActivate: [AuthGuard],
+    //data: { superusuario: true },
     children: [
       {
         path: 'dashboard',
@@ -25,10 +25,10 @@ export const routes: Routes = [
     ],
   },
   {
-    path: 'proveedor',
+    path: 'cliente',
     component: ProveedorLayout,
-    canActivate: [AuthGuard],
-    data: { role: 'proveedor' },
+    //canActivate: [AuthGuard],
+    //data: { superusuario: false },
     children: [
       {
         path: 'dashboard',
@@ -39,8 +39,8 @@ export const routes: Routes = [
   {
     path: 'operador',
     component: OperadorLayout,
-    canActivate: [AuthGuard],
-    data: { role: 'operador' },
+    //canActivate: [AuthGuard],
+    //data: { superusuario: false },
     children: [
       {
         path: 'dashboard',

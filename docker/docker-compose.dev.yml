@@ -1,6 +1,21 @@
 version: "3.9"
 
 services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-taller
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Nalita.48
+      MYSQL_DATABASE: proyectoastaller
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pNalita.48"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   backend:
     build:
       context: ../backed
@@ -8,17 +23,16 @@ services:
     container_name: backTaller-backend
     environment:
       SPRING_PROFILES_ACTIVE: dev
-      SPRING_DATASOURCE_URL: jdbc:mysql://host.docker.internal:3306/proyectoastaller
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/proyectoastaller
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: Nalita.48
       JPA_DDL_AUTO: update
       JPA_SHOW_SQL: "true"
-
     expose:
-      - "8080"
-    # Descomenta para depurar directamente sin proxy (no recomendado cuando uses proxy):
-    # ports:
-    #   - "8080:8080"
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
 
   frontend:
     build:
@@ -27,9 +41,6 @@ services:
     container_name: agorasoft-frontend
     expose:
       - "80"
-    # Igual que arriba: solo si quieres verlo directo sin proxy:
-    # ports:
-    #   - "4201:80"
 
   proxy:
     image: nginx:1.27-alpine

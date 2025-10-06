@@ -20,8 +20,6 @@ import {environment} from '../../../../environments/environments';
 })
 export class SignUp {
   signUpForm: FormGroup;
-  roles = ['comercial', 'proveedor', 'operador'];
-  organizaciones = ['Corabastos', 'La concordia', '7 de Agosto'];
   submitted = false;
   step: 'register' | 'verify' = 'register';
   code = '';
@@ -32,8 +30,6 @@ export class SignUp {
     this.signUpForm = this.fb.group({
       nombre: ['', Validators.required],
       apellido: ['', Validators.required],
-      organizacion: ['', Validators.required],
-      rol: ['', Validators.required],
       correo: ['', [Validators.required, Validators.email]],
       contrasena: ['', [Validators.required, Validators.minLength(6)]],
     });
@@ -60,9 +56,7 @@ export class SignUp {
         this.signUpForm.value.nombre,
         this.signUpForm.value.apellido,
         this.signUpForm.value.correo,
-        this.signUpForm.value.contrasena,
-        this.signUpForm.value.rol,
-        this.signUpForm.value.organizacion
+        this.signUpForm.value.contrasena
       );
       await this.clerkService.sendVerification();
       this.step = 'verify';
@@ -71,43 +65,59 @@ export class SignUp {
     }
   }
 
+  canResend = true;
+  async resendCode() {
+    if (!this.canResend) return;
+    this.canResend = false;
+
+    try {
+      await this.clerkService.sendVerification();
+      alert('Se ha reenviado el código de verificación.');
+    } catch (err) {
+      console.error('Error al reenviar el código:', err);
+      alert('No se pudo reenviar el código. Intenta más tarde.');
+    } finally {
+      setTimeout(() => (this.canResend = true), 15000); // 15 segundos
+    }
+  }
+
   async onVerify() {
     try {
       const result = await this.clerkService.verifyEmail(this.code);
       if (result?.status === 'complete') {
-        await this.clerkService.getClerkInstance()?.setActive({
-          session: result.createdSessionId,
+      await this.clerkService.getClerkInstance()?.setActive({
+        session: result.createdSessionId,
+      });
+
+      const clerkUser = await this.clerkService.getClerkInstance().user;
+      if (clerkUser) {
+        const usuarioBackend = {
+          id: clerkUser.id,
+          nombre: clerkUser.firstName,
+          apellido: clerkUser.lastName,
+          usuario: clerkUser.emailAddresses?.[0]?.emailAddress,
+          esSuperusuario: false, // o true si lo asignas manualmente
+        };
+
+        // Guardar en tu backend
+        await fetch(`${environment.apiBaseUrl}/usuarios`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(usuarioBackend),
         });
 
-        // Obtener usuario de Clerk
-        const clerkUser = await this.clerkService.getClerkInstance().user;
-        if (clerkUser) {
-          // Construir el objeto para el backend
-          const usuarioBackend = {
-            id: clerkUser.id,
-            nombre: clerkUser.firstName,
-            apellido: clerkUser.lastName,
-            correo: clerkUser.emailAddresses?.[0]?.emailAddress,
-            rol: clerkUser.unsafeMetadata?.['role'],
-            organizacion: clerkUser.unsafeMetadata?.['plaza']
-          };
+        // ✅ Luego consultamos si es superusuario
+        const response = await fetch(`${environment.apiBaseUrl}/usuarios/${clerkUser.id}`);
+        const userFromBackend = await response.json();
 
-          
-          // Enviar al backend
-          await fetch(`${environment.apiBaseUrl}/usuarios`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(usuarioBackend)
-          });
-        }
-
-        const role = await this.clerkService.getUserRole();
-        if (role) {
-          this.router.navigate([`/${role}/dashboard`]);
+        // ✅ Navegamos según el valor
+        if (userFromBackend.esSuperusuario) {
+          this.router.navigate(['/admin/dashboard']);
         } else {
-          this.router.navigate(['/dashboard']); // fallback
+          this.router.navigate(['/cliente/dashboard']);
         }
       }
+    }
       console.log("HI: " + result?.status)
     } catch (err) {
       console.error('Error en verificación:', err);

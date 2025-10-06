@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  clerkPublicKey: 'pk_test_YWNjZXB0ZWQtdGVybWl0ZS05MS5jbGVyay5hY2NvdW50cy5kZXYk',
+  clerkPublicKey: 'pk_test_Z2xvd2luZy1qYXliaXJkLTQ5LmNsZXJrLmFjY291bnRzLmRldiQ',
   apiBaseUrl: '/api'
 };

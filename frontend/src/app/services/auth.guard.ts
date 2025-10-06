@@ -25,16 +25,17 @@ export class AuthGuard implements CanActivate {
       });
       return false;
     }
+    
+    const requiereSuperusuario = route.data['superusuario'] as boolean | undefined;
 
-    // Verificar rol (si la ruta lo requiere)
-    const requiredRole = route.data['role'] as string | undefined;
-    if (requiredRole) {
-      const userRole = await this.authService.getUserRole();
-      if (userRole !== requiredRole) {
-        this.router.navigate(['/unauthorized']);
-        return false;
+    if (requiereSuperusuario !== undefined) {
+        const user = await this.authService.getUser();
+
+        if (requiereSuperusuario && !user.superusuario) {
+          this.router.navigate(['/unauthorized']);
+          return false;
+        }
       }
-    }
 
     return true;
   }
